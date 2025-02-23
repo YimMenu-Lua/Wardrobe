@@ -6,16 +6,27 @@ local is_started_by_us = false
 
 is_safe_to_run_wardrobe_patch      = scr_patch:new("wardrobe_mp", "ISTRWP", "2C 01 00 40 2C 05 02 69 06 56 1C 07", 0, {0x72, 0x2E, 0x05, 0x01})
 should_trigger_wardrobe_menu_patch = scr_patch:new("wardrobe_mp", "STWMP", "56 22 00 71", 0, {0x2B, 0x00, 0x00})
-does_player_own_item_patch         = scr_patch:new("wardrobe_mp", "DPOIP", "57 D2 00 38 08", 0, {0x55}) -- Make all the clothes available
+
+-- Make all the clothes available
+does_player_own_item_patch    = scr_patch:new("wardrobe_mp", "DPOIP", "57 D2 00 38 08", 0, {0x55})
+is_item_locked_by_stat_patch  = scr_patch:new("wardrobe_mp", "IILBS", "38 00 65 02 F7 B6 C6 31 09 00 31 46 A9 B0 28 04", 0, {0x71, 0x2E, 0x03, 0x01})
+is_item_locked_by_stat_patch2 = scr_patch:new("wardrobe_mp", "IILBS2", "38 00 65 04 90 44 B3 80 15 00 CB C8 CF 72 0F 00 87 81 38 F6 1C 00 31 48 DE 94 16 00", 0, {0x72, 0x2E, 0x03, 0x01})
+is_item_locked_by_stat_patch3 = scr_patch:new("wardrobe_mp", "IILBS2", "38 00 65 01 34 ED 23 4E 03 00", 0, {0x71, 0x2E, 0x03, 0x01})
 
 is_safe_to_run_wardrobe_patch:disable_patch()
 should_trigger_wardrobe_menu_patch:disable_patch()
 does_player_own_item_patch:disable_patch()
+is_item_locked_by_stat_patch:disable_patch()
+is_item_locked_by_stat_patch2:disable_patch()
+is_item_locked_by_stat_patch3:disable_patch()
 
 local function CLEANUP_WARDROBE_SCRIPT()
     is_safe_to_run_wardrobe_patch:disable_patch()
     should_trigger_wardrobe_menu_patch:disable_patch()
     does_player_own_item_patch:disable_patch()
+    is_item_locked_by_stat_patch:disable_patch()
+    is_item_locked_by_stat_patch2:disable_patch()
+    is_item_locked_by_stat_patch3:disable_patch()
 
     local data = locals.get_pointer("wardrobe_mp", WARDROBE_DATA)
     scr_function.call_script_function("wardrobe_mp", "CWS", "2D 01 03 00 00 38 00 41 E3", "void", {
@@ -27,6 +38,9 @@ event.register_handler(menu_event.ScriptsReloaded, function()
     is_safe_to_run_wardrobe_patch:disable_patch()
     should_trigger_wardrobe_menu_patch:disable_patch()
     does_player_own_item_patch:disable_patch()
+    is_item_locked_by_stat_patch:disable_patch()
+    is_item_locked_by_stat_patch2:disable_patch()
+    is_item_locked_by_stat_patch3:disable_patch()
 end)
 
 script.register_looped("Wardrobe", function()
@@ -67,6 +81,9 @@ outfit_editor_tab:add_button("Open Wardrobe", function()
                 is_safe_to_run_wardrobe_patch:enable_patch()
                 should_trigger_wardrobe_menu_patch:enable_patch()
                 does_player_own_item_patch:enable_patch()
+                is_item_locked_by_stat_patch:enable_patch()
+                is_item_locked_by_stat_patch2:enable_patch()
+                is_item_locked_by_stat_patch3:enable_patch()
                 is_started_by_us = true
             else
                 gui.show_error("Wardrobe", "Failed to start the wardrobe.")
