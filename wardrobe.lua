@@ -77,7 +77,6 @@ outfit_editor_tab:add_button("Open Wardrobe", function()
             SCRIPT.SET_SCRIPT_AS_NO_LONGER_NEEDED("wardrobe_mp")
             --memory.free(wardrobe_launcher)
             if thread > 0 then
-                sc:sleep(1000) 
                 is_safe_to_run_wardrobe_patch:enable_patch()
                 should_trigger_wardrobe_menu_patch:enable_patch()
                 does_player_own_item_patch:enable_patch()
